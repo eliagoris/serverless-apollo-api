@@ -9,8 +9,16 @@ module.exports = connectToDatabase = () => {
     return Promise.resolve()
   }
 
+  const {
+    env: { DATABASE_ENDPOINT },
+  } = process
+
   console.log("=> using new database connection")
-  return mongoose.connect(process.env.DATABASE_ENDPOINT).then((db) => {
-    isConnected = db.connections[0].readyState
-  })
+  return mongoose
+    .connect(DATABASE_ENDPOINT, {
+      useNewUrlParser: true,
+    })
+    .then((db) => {
+      isConnected = db.connections[0].readyState
+    })
 }
