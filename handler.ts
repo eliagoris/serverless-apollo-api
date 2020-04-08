@@ -10,7 +10,7 @@ async function useNotes() {
   const databaseConnection = await getDatabaseConnection()
   const noteModel = Note(databaseConnection)
 
-  return noteModel
+  return { noteModel }
 }
 
 export const createNote: APIGatewayProxyHandler = async (
@@ -70,6 +70,7 @@ export const getAllNotes: APIGatewayProxyHandler = async (
 
   try {
     const { noteModel } = await useNotes()
+    console.log(noteModel)
     const notes = await noteModel.find()
 
     return {
