@@ -1,3 +1,5 @@
+org: eduardofidera
+app: serverless-api
 service: serverless-api
 
 provider:
@@ -6,6 +8,8 @@ provider:
   memorySize: 128 # set the maximum memory of the Lambdas in Megabytes
   timeout: 10 # the timeout is 10 seconds (default is 6 seconds)
   stage: dev # setting the env stage to dev, this will be visible in the routes
+  environment:
+    DATABASE_ENDPOINT: ${param:databaseEndpoint}
 
 functions: # add 4 functions for CRUD
   create:
