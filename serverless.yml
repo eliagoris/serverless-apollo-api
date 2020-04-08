@@ -13,35 +13,35 @@ provider:
 
 functions: # add 4 functions for CRUD
   create:
-    handler: handler.create # point to exported create function in handler.js
+    handler: handler.createNote # point to exported create function in handler.js
     events:
       - http:
           path: notes # path will be domain.name.com/dev/notes
           method: post
           cors: true
   getOne:
-    handler: handler.getOne
+    handler: handler.getOneNote
     events:
       - http:
           path: notes/{id} # path will be domain.name.com/dev/notes/1
           method: get
           cors: true
   getAll:
-    handler: handler.getAll # path will be domain.name.com/dev/notes
+    handler: handler.getAllNotes # path will be domain.name.com/dev/notes
     events:
       - http:
           path: notes
           method: get
           cors: true
   update:
-    handler: handler.update # path will be domain.name.com/dev/notes/1
+    handler: handler.updateNote # path will be domain.name.com/dev/notes/1
     events:
       - http:
           path: notes/{id}
           method: put
           cors: true
   delete:
-    handler: handler.delete
+    handler: handler.deleteNote
     events:
       - http:
           path: notes/{id} # path will be domain.name.com/dev/notes/1
@@ -49,4 +49,5 @@ functions: # add 4 functions for CRUD
           cors: true
 
 plugins:
+  - serverless-plugin-typescript
   - serverless-offline # adding the plugin to be able to run the offline emulation

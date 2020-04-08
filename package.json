@@ -9,7 +9,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless-offline": "^6.1.4"
+    "@types/aws-lambda": "^8.10.48",
+    "@types/node": "^13.11.0",
+    "serverless-offline": "^6.1.4",
+    "serverless-plugin-typescript": "^1.1.9",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

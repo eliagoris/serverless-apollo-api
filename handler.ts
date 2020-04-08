@@ -1,15 +1,21 @@
 "use strict"
 
+import { APIGatewayProxyHandler } from "aws-lambda"
+
 require("dotenv").config({ path: "./variables.env" })
 
 const connectToDatabase = require("./db")
 const Note = require("./models/note")
 
-module.exports.create = (event, context, callback) => {
+export const createNote: APIGatewayProxyHandler = (
+  event,
+  context,
+  callback
+) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   connectToDatabase().then(() => {
-    Note.create(JSON.parse(event.body))
+    Note.create(JSON.parse(event.body || ""))
       .then((note) =>
         callback(null, {
           statusCode: 200,
@@ -26,11 +32,15 @@ module.exports.create = (event, context, callback) => {
   })
 }
 
-module.exports.getOne = (event, context, callback) => {
+export const getOneNote: APIGatewayProxyHandler = (
+  event,
+  context,
+  callback
+) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   connectToDatabase().then(() => {
-    Note.findById(event.pathParameters.id)
+    Note.findById(event.pathParameters?.id)
       .then((note) =>
         callback(null, {
           statusCode: 200,
@@ -47,7 +57,11 @@ module.exports.getOne = (event, context, callback) => {
   })
 }
 
-module.exports.getAll = (event, context, callback) => {
+export const getAllNotes: APIGatewayProxyHandler = (
+  event,
+  context,
+  callback
+) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   connectToDatabase().then(() => {
@@ -68,13 +82,21 @@ module.exports.getAll = (event, context, callback) => {
   })
 }
 
-module.exports.update = (event, context, callback) => {
+export const updateNote: APIGatewayProxyHandler = (
+  event,
+  context,
+  callback
+) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   connectToDatabase().then(() => {
-    Note.findByIdAndUpdate(event.pathParameters.id, JSON.parse(event.body), {
-      new: true,
-    })
+    Note.findByIdAndUpdate(
+      event.pathParameters?.id,
+      JSON.parse(event.body || ""),
+      {
+        new: true,
+      }
+    )
       .then((note) =>
         callback(null, {
           statusCode: 200,
@@ -91,11 +113,15 @@ module.exports.update = (event, context, callback) => {
   })
 }
 
-module.exports.delete = (event, context, callback) => {
+export const deleteNote: APIGatewayProxyHandler = (
+  event,
+  context,
+  callback
+) => {
   context.callbackWaitsForEmptyEventLoop = false
 
   connectToDatabase().then(() => {
-    Note.findByIdAndRemove(event.pathParameters.id)
+    Note.findByIdAndRemove(event.pathParameters?.id)
       .then((note) =>
         callback(null, {
           statusCode: 200,
