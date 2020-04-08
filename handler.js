@@ -1,3 +1,7 @@
+"use strict"
+
+const connectToDatabase = require("./db")
+
 module.exports.create = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false
 
