@@ -1,11 +1,10 @@
 "use strict"
 
-import { APIGatewayProxyHandler } from "aws-lambda"
+import { APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda"
+import { getDatabaseConnection } from "./database-connector"
+import Note from "./models/note"
 
 require("dotenv").config({ path: "./variables.env" })
-
-const connectToDatabase = require("./db")
-const Note = require("./models/note")
 
 export const createNote: APIGatewayProxyHandler = (
   event,
@@ -14,7 +13,7 @@ export const createNote: APIGatewayProxyHandler = (
 ) => {
   context.callbackWaitsForEmptyEventLoop = false
 
-  connectToDatabase().then(() => {
+  getDatabaseConnection().then(() => {
     Note.create(JSON.parse(event.body || ""))
       .then((note) =>
         callback(null, {
@@ -39,7 +38,7 @@ export const getOneNote: APIGatewayProxyHandler = (
 ) => {
   context.callbackWaitsForEmptyEventLoop = false
 
-  connectToDatabase().then(() => {
+  getDatabaseConnection().then(() => {
     Note.findById(event.pathParameters?.id)
       .then((note) =>
         callback(null, {
@@ -57,29 +56,33 @@ export const getOneNote: APIGatewayProxyHandler = (
   })
 }
 
-export const getAllNotes: APIGatewayProxyHandler = (
+export const getAllNotes: APIGatewayProxyHandler = async (
   event,
   context,
   callback
-) => {
+): Promise<APIGatewayProxyResult> => {
   context.callbackWaitsForEmptyEventLoop = false
 
-  connectToDatabase().then(() => {
-    Note.find()
-      .then((notes) =>
-        callback(null, {
-          statusCode: 200,
-          body: JSON.stringify(notes),
-        })
-      )
-      .catch((err) =>
-        callback(null, {
-          statusCode: err.statusCode || 500,
-          headers: { "Content-Type": "text/plain" },
-          body: "Could not fetch the notes.",
-        })
-      )
-  })
+  try {
+    const databaseConnection = await getDatabaseConnection()
+    const noteModel = Note(databaseConnection)
+
+    const notes = await noteModel.find()
+
+    console.log("notes: ")
+    console.log(notes)
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(notes),
+    }
+  } catch (err) {
+    return {
+      statusCode: err.statusCode || 500,
+      headers: { "Content-Type": "text/plain" },
+      body: "Could not fetch the notes.",
+    }
+  }
 }
 
 export const updateNote: APIGatewayProxyHandler = (
@@ -89,7 +92,7 @@ export const updateNote: APIGatewayProxyHandler = (
 ) => {
   context.callbackWaitsForEmptyEventLoop = false
 
-  connectToDatabase().then(() => {
+  getDatabaseConnection().then(() => {
     Note.findByIdAndUpdate(
       event.pathParameters?.id,
       JSON.parse(event.body || ""),
@@ -120,7 +123,7 @@ export const deleteNote: APIGatewayProxyHandler = (
 ) => {
   context.callbackWaitsForEmptyEventLoop = false
 
-  connectToDatabase().then(() => {
+  getDatabaseConnection().then(() => {
     Note.findByIdAndRemove(event.pathParameters?.id)
       .then((note) =>
         callback(null, {

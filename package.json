@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.48",
+    "@types/mongoose": "^5.7.8",
     "@types/node": "^13.11.0",
     "serverless-offline": "^6.1.4",
     "serverless-plugin-typescript": "^1.1.9",
