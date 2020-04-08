@@ -13,7 +13,7 @@ provider:
 
 functions: # add 4 functions for CRUD
   create:
-    handler: handler.createNote # point to exported create function in handler.js
+    handler: handler.createNoteHandler # point to exported create function in handler.js
     events:
       - http:
           path: notes # path will be domain.name.com/dev/notes
@@ -27,21 +27,21 @@ functions: # add 4 functions for CRUD
           method: get
           cors: true
   getAll:
-    handler: handler.getAllNotes # path will be domain.name.com/dev/notes
+    handler: handler.getAllNotesHandler # path will be domain.name.com/dev/notes
     events:
       - http:
           path: notes
           method: get
           cors: true
   update:
-    handler: handler.updateNote # path will be domain.name.com/dev/notes/1
+    handler: handler.updateNoteHandler # path will be domain.name.com/dev/notes/1
     events:
       - http:
           path: notes/{id}
           method: put
           cors: true
   delete:
-    handler: handler.deleteNote
+    handler: handler.deleteNoteHandler
     events:
       - http:
           path: notes/{id} # path will be domain.name.com/dev/notes/1
