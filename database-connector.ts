@@ -6,8 +6,6 @@ mongoose.Promise = global.Promise
 let databaseConnection: Mongoose
 
 export const getDatabaseConnection = async () => {
-  console.log("connecting...")
-
   if (databaseConnection) {
     console.log("=> using existing database connection")
     return databaseConnection
