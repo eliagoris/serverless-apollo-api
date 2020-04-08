@@ -20,7 +20,7 @@ functions: # add 4 functions for CRUD
           method: post
           cors: true
   getOne:
-    handler: handler.getOneNote
+    handler: handler.getOneNoteHandler
     events:
       - http:
           path: notes/{id} # path will be domain.name.com/dev/notes/1

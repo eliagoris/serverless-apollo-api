@@ -115,7 +115,7 @@ export const deleteNoteById: APIGatewayProxyHandler = async (
     return {
       statusCode: err.statusCode || 500,
       headers: { "Content-Type": "text/plain" },
-      body: "Could not fetch the notes.",
+      body: "Could not delete the note.",
     }
   }
 }
