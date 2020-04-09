@@ -1,4 +1,5 @@
 import { Claim } from "@magic-sdk/admin"
+import * as jwt from "jsonwebtoken"
 
 import { getDatabaseConnection } from "../helpers/database-connector"
 import User from "../models/user"
@@ -28,6 +29,19 @@ export async function useUser() {
   }
 
   const getUserByIssuer = async (issuer: string): Promise<User> => {
+    const user = await UserModel.findOne({ issuer })
+
+    return user
+  }
+
+  const getUserByAccessToken = async (accessToken: string) => {
+    const {
+      env: { MAGIC_LINK_SECRET_KEY },
+    } = process
+    const { issuer } = jwt.verify(accessToken, MAGIC_LINK_SECRET_KEY)
+
+    if (!issuer) return false
+
     const user = await UserModel.findOne({ issuer })
 
     return user
@@ -68,5 +82,6 @@ export async function useUser() {
     getUserById,
     getUserByIssuer,
     updateUserFromMagicUser,
+    getUserByAccessToken,
   }
 }

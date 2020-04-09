@@ -10,7 +10,9 @@ provider:
   timeout: 10 # (default is 6 seconds)
   stage: dev # setting the env stage to dev, this will be visible in the routes
   environment:
+    # allowing environment variables to be set through serverless dashboard
     DATABASE_ENDPOINT: ${param:databaseEndpoint}
+    MAGIC_LINK_SECRET_KEY: ${param:magicLinkSecretKey}
 
 functions:
   createAuthentication:
@@ -19,6 +21,13 @@ functions:
       - http:
           path: /login
           method: post
+          cors: true
+  getAuthenticatedUser:
+    handler: handler.getAuthenticatedUserHandler
+    events:
+      - http:
+          path: /user
+          method: get
           cors: true
   getOneUser:
     handler: handler.getOneUserHandler
