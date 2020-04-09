@@ -1,5 +1,7 @@
 import { APIGatewayProxyHandler } from "aws-lambda"
-import { Magic, MagicUserMetadata } from "@magic-sdk/admin"
+import { Magic } from "@magic-sdk/admin"
+import * as jwt from "jsonwebtoken"
+
 import { getIsAuthorizationTokenValid } from "../helpers/authorization-token-validator"
 
 const {
@@ -7,15 +9,25 @@ const {
 } = process
 const magic = new Magic(MAGIC_LINK_SECRET_KEY)
 
+const getMagicUserFromDidToken = (didToken: string) => {
+  const user = {
+    issuer: magic.token.getIssuer(didToken),
+    publicAddress: magic.token.getPublicAddress(didToken),
+    claim: magic.token.decode(didToken)[1],
+  }
+
+  return user
+}
+
 /**
  * Creates user authentication from authorization token
  */
 export const handleLogin: APIGatewayProxyHandler = async (event) => {
   const {
-    headers: { Authorization },
+    headers: { authorization },
   } = event as any
 
-  const isTokenValid = getIsAuthorizationTokenValid(Authorization)
+  const isTokenValid = getIsAuthorizationTokenValid(authorization)
 
   if (!isTokenValid) {
     return {
@@ -25,31 +37,22 @@ export const handleLogin: APIGatewayProxyHandler = async (event) => {
   }
 
   try {
-    const didToken = Authorization!.substring(7)
+    const didToken = authorization!.substring(7)
 
     /** First, validate the DID token */
     magic.token.validate(didToken)
 
-    const issuer = magic.token.getIssuer(didToken)
-
-    /** Get user metadata */
-    const userMetadata: MagicUserMetadata = await magic.users.getMetadataByIssuer(
-      issuer
-    )
-
-    if (!userMetadata) {
-      throw new Error("No user metadata was found")
-    }
-
-    const user = {
-      issuer,
-      email: userMetadata.email,
-    }
+    const magicUser = getMagicUserFromDidToken(didToken)
+    const { issuer } = magicUser
+    const token = jwt.sign({ issuer }, MAGIC_LINK_SECRET_KEY)
 
     /** Returns the user */
     return {
       statusCode: 200,
-      body: JSON.stringify(user),
+      body: JSON.stringify({
+        access_token: token,
+        magicUser,
+      }),
     }
   } catch (err) {
     console.error(err)

@@ -3,6 +3,8 @@
 import { APIGatewayProxyHandler } from "aws-lambda"
 import { config } from "dotenv"
 
+config({ path: "./variables.env" })
+
 import {
   createNote,
   getNoteById,
@@ -12,8 +14,6 @@ import {
 } from "./src/controllers/note.controller"
 import { handleAuthorization } from "./src/controllers/authorization.controller"
 import { handleLogin } from "./src/controllers/authentication.controller"
-
-config({ path: "./variables.env" })
 
 export const authorizationHandler = handleAuthorization
 

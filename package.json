@@ -19,6 +19,7 @@
   "dependencies": {
     "@magic-sdk/admin": "^0.1.0-beta.8",
     "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.7"
   }
 }
