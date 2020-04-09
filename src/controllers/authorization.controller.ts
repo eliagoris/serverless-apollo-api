@@ -8,6 +8,12 @@ const {
 } = process
 const magic = new Magic(MAGIC_LINK_SECRET_KEY)
 
+/**
+ * This authorization is currently allowing any magic-link users
+ *
+ * @TODO After validation, retrieve the issuer through token,
+ * and then compare with the database issuer to check if it's allowed to use the API
+ */
 export const handleAuthorization: APIGatewayAuthorizerHandler = async (
   event
 ) => {

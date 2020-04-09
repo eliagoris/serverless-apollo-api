@@ -7,35 +7,42 @@ provider:
   runtime: nodejs12.x
   region: sa-east-1
   memorySize: 128 # set the maximum memory of the Lambdas in Megabytes
-  timeout: 10 # the timeout is 10 seconds (default is 6 seconds)
+  timeout: 10 # (default is 6 seconds)
   stage: dev # setting the env stage to dev, this will be visible in the routes
   environment:
     DATABASE_ENDPOINT: ${param:databaseEndpoint}
 
 functions: # add 4 functions for CRUD
-  create:
-    handler: handler.createNoteHandler # point to exported create function in handler.js
+  login:
+    handler: handler.loginHandler
     events:
       - http:
-          path: notes # path will be domain.name.com/dev/notes
+          path: /auth/login
+          method: post
+          cors: true
+  create:
+    handler: handler.createNoteHandler
+    events:
+      - http:
+          path: notes
           method: post
           cors: true
   getOne:
     handler: handler.getOneNoteHandler
     events:
       - http:
-          path: notes/{id} # path will be domain.name.com/dev/notes/1
+          path: notes/{id}
           method: get
           cors: true
   getAll:
-    handler: handler.getAllNotesHandler # path will be domain.name.com/dev/notes
+    handler: handler.getAllNotesHandler
     events:
       - http:
           path: notes
           method: get
           cors: true
   update:
-    handler: handler.updateNoteHandler # path will be domain.name.com/dev/notes/1
+    handler: handler.updateNoteHandler
     events:
       - http:
           path: notes/{id}
@@ -45,7 +52,7 @@ functions: # add 4 functions for CRUD
     handler: handler.deleteNoteHandler
     events:
       - http:
-          path: notes/{id} # path will be domain.name.com/dev/notes/1
+          path: notes/{id}
           method: delete
           cors: true
   authorizer:
@@ -54,4 +61,4 @@ functions: # add 4 functions for CRUD
 
 plugins:
   - serverless-plugin-typescript
-  - serverless-offline # adding the plugin to be able to run the offline emulation
+  - serverless-offline
