@@ -22,7 +22,7 @@ const getMagicUserFromDidToken = (didToken: string) => {
 /**
  * Creates user authentication from authorization token
  */
-export const handleLogin: APIGatewayProxyHandler = async (event) => {
+export const createAuthentication: APIGatewayProxyHandler = async (event) => {
   const {
     headers: { authorization },
   } = event as any

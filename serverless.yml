@@ -12,50 +12,15 @@ provider:
   environment:
     DATABASE_ENDPOINT: ${param:databaseEndpoint}
 
-functions: # add 4 functions for CRUD
-  login:
-    handler: handler.loginHandler
+functions:
+  createAuthentication:
+    handler: handler.createAuthenticationHandler
     events:
       - http:
-          path: /auth/login
+          path: /login
           method: post
           cors: true
-  create:
-    handler: handler.createNoteHandler
-    events:
-      - http:
-          path: notes
-          method: post
-          cors: true
-  getOne:
-    handler: handler.getOneNoteHandler
-    events:
-      - http:
-          path: notes/{id}
-          method: get
-          cors: true
-  getAll:
-    handler: handler.getAllNotesHandler
-    events:
-      - http:
-          path: notes
-          method: get
-          cors: true
-  update:
-    handler: handler.updateNoteHandler
-    events:
-      - http:
-          path: notes/{id}
-          method: put
-          cors: true
-  delete:
-    handler: handler.deleteNoteHandler
-    events:
-      - http:
-          path: notes/{id}
-          method: delete
-          cors: true
-  authorizer:
+  handleAuthorization:
     handler: handler.authorizationHandler
     cors: true
 
