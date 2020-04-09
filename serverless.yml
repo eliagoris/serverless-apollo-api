@@ -20,6 +20,13 @@ functions:
           path: /login
           method: post
           cors: true
+  getOneUser:
+    handler: handler.getOneUserHandler
+    events:
+      - http:
+          path: /user/{id}
+          method: get
+          cors: true
   handleAuthorization:
     handler: handler.authorizationHandler
     cors: true
