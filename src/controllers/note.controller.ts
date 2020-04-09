@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda"
 
-import { useNotes } from "../hooks/note"
+import { useNotes } from "../hooks/use-note"
 
 export const createNote: APIGatewayProxyHandler = async function (
   event,

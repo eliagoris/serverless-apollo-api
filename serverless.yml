@@ -5,6 +5,7 @@ service: serverless-api
 provider:
   name: aws
   runtime: nodejs12.x
+  region: sa-east-1
   memorySize: 128 # set the maximum memory of the Lambdas in Megabytes
   timeout: 10 # the timeout is 10 seconds (default is 6 seconds)
   stage: dev # setting the env stage to dev, this will be visible in the routes
@@ -47,6 +48,9 @@ functions: # add 4 functions for CRUD
           path: notes/{id} # path will be domain.name.com/dev/notes/1
           method: delete
           cors: true
+  authorizer:
+    handler: handler.authorizationHandler
+    cors: true
 
 plugins:
   - serverless-plugin-typescript

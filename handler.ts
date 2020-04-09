@@ -10,8 +10,11 @@ import {
   updateNoteById,
   deleteNoteById,
 } from "./src/controllers/note.controller"
+import { handleAuthorization } from "./src/controllers/authorization.controller"
 
 config({ path: "./variables.env" })
+
+export const authorizationHandler = handleAuthorization
 
 export const createNoteHandler: APIGatewayProxyHandler = createNote
 
