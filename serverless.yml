@@ -15,6 +15,24 @@ provider:
     MAGIC_LINK_SECRET_KEY: ${param:magicLinkSecretKey}
 
 functions:
+  graphql:
+    handler: handler.graphqlHandler
+    events:
+      - http:
+          path: graphql
+          method: post
+          cors: true
+      - http:
+          path: graphql
+          method: get
+          cors: true
+  playground:
+    handler: handler.playgroundHandler
+    events:
+      - http:
+          path: playground
+          method: get
+          cors: true
   createAuthentication:
     handler: handler.createAuthenticationHandler
     events:

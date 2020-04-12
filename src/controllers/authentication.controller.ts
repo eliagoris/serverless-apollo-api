@@ -3,7 +3,7 @@ import { Magic } from "@magic-sdk/admin"
 import * as jwt from "jsonwebtoken"
 
 import { getIsAuthorizationTokenValid } from "../helpers/authorization-token-validator"
-import { useUser, MagicUser } from "../hooks/use-user"
+import { useUser, MagicUser } from "../hooks/use-user.hook"
 
 const {
   env: { MAGIC_LINK_SECRET_KEY },

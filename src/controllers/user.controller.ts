@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda"
 
-import { useUser } from "../hooks/use-user"
+import { useUser } from "../hooks/use-user.hook"
 import { getIsAuthorizationTokenValid } from "../helpers/authorization-token-validator"
 
 export const getAuthenticatedUser: APIGatewayProxyHandler = async (
