@@ -2,7 +2,7 @@ export const userTypes = `
   type User {
     _id: String
     email: String!
-    username: String!
+    username: String
     issuer: String!
     name: String
     lastLoginAt: String
@@ -14,7 +14,7 @@ export const userTypes = `
 
   input CreateUserInput {
     email: String!
-    username: String!
+    username: String
     issuer: String!
     name: String
     lastLoginAt: String

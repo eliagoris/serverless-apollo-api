@@ -30,6 +30,9 @@ export function useAuthentication() {
       const magicUser = getMagicUserFromDidToken(didToken)
       const { issuer } = magicUser
 
+      /** Get user meta data */
+      const userMetaData = await magic.users.getMetadataByIssuer(issuer)
+
       /** Now we check if it's a returning or a new user */
       /** Use user hook to retrieve the user from database */
       const {
@@ -44,11 +47,10 @@ export function useAuthentication() {
        */
       let user: object
       if (!existingUser) {
-        console.log("creating user...")
-        user = await createUserFromMagicUser(magicUser)
+        user = await createUserFromMagicUser(magicUser, userMetaData)
       } else {
         console.log("updating user...")
-        user = await updateUserFromMagicUser(magicUser)
+        user = await updateUserFromMagicUser(magicUser, userMetaData)
       }
 
       return user

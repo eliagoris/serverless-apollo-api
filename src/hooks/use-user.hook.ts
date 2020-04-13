@@ -1,4 +1,4 @@
-import { Claim } from "@magic-sdk/admin"
+import { Claim, MagicUserMetadata } from "@magic-sdk/admin"
 import * as jwt from "jsonwebtoken"
 
 import { getDatabaseConnection } from "../helpers/database-connector"
@@ -7,9 +7,9 @@ import User from "../models/user"
 interface User {
   issuer: string
   email: string
-  username: string
-  name: string
-  lastLoginAt: number
+  username?: string
+  name?: string
+  lastLoginAt?: number
 }
 
 export interface MagicUser {
@@ -48,22 +48,9 @@ export async function useUser() {
 
     if (!issuer) return false
 
-    const user = await UserModel.findOne({ issuer })
+    const user = getUserByIssuer(issuer)
 
     return user
-  }
-
-  const createUserFromMagicUser = async (user: MagicUser) => {
-    const userToCreate: User = {
-      issuer: user.issuer,
-      email: "mail@mail.com",
-      username: "eduardo",
-      name: "Eduardo Campos",
-      lastLoginAt: user.claim.iat,
-    }
-
-    const createdUser = await createUser(userToCreate)
-    return createdUser
   }
 
   const createUser = async (user: User) => {
@@ -72,12 +59,39 @@ export async function useUser() {
     return createdUser
   }
 
-  const updateUserFromMagicUser = async (user: MagicUser) => {
+  /**
+   * Used to create the user on first login
+   */
+  const createUserFromMagicUser = async (
+    user: MagicUser,
+    userMetaData: MagicUserMetadata
+  ) => {
+    const { issuer } = user
+    const { email } = userMetaData
+
+    const userToCreate: User = {
+      issuer,
+      email: email ?? "",
+      lastLoginAt: user.claim.iat,
+    }
+
+    const createdUser = await createUser(userToCreate)
+    return createdUser
+  }
+
+  /**
+   * Updates user last login timestamp
+   */
+  const updateUserFromMagicUser = async (
+    user: MagicUser,
+    userMetaData: MagicUserMetadata
+  ) => {
+    const { issuer } = user
+    const { email } = userMetaData
+
     const userToUpdate: User = {
-      issuer: user.issuer,
-      email: "mail@mail.com",
-      username: "eduardo",
-      name: "Eduardo C.",
+      issuer,
+      email: email ?? "",
       lastLoginAt: user.claim.iat,
     }
 
