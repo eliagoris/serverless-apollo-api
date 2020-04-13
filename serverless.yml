@@ -37,7 +37,7 @@ functions:
     handler: handler.createAuthenticationHandler
     events:
       - http:
-          path: /login
+          path: /auth
           method: post
           cors: true
   getAuthenticatedUser:

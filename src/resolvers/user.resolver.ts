@@ -1,6 +1,6 @@
 import { useUser } from "../hooks/use-user.hook"
 
-export const resolvers = {
+export const userResolvers = {
   Query: {
     async user(parent, { accessToken }) {
       const { getUserByAccessToken } = await useUser()

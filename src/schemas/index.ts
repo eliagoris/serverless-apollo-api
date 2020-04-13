@@ -1,8 +1,9 @@
 import { makeExecutableSchema } from "apollo-server"
 
 import { userTypes } from "../types/user.types"
-import { resolvers as userResolvers } from "../resolvers/user.resolver"
-import { loginTypes } from "../types/login.types"
+import { userResolvers } from "../resolvers/user.resolver"
+import { authenticationResolvers } from "../resolvers/authentication.resolver"
+import { authenticationTypes } from "../types/authentication.types"
 
 const queries = `
   type Query {
@@ -14,11 +15,11 @@ const queries = `
 const mutations = `
   type Mutation {
     createUser(input: CreateUserInput!): CreateUserPayload
-    login(input: LoginInput!): LoginPayload
+    createAuthentication(input: AuthenticationInput!): AuthenticationPayload
   }
 `
 
 export const schema = makeExecutableSchema({
-  typeDefs: [queries, mutations, userTypes, loginTypes],
-  resolvers: userResolvers,
+  typeDefs: [queries, mutations, userTypes, authenticationTypes],
+  resolvers: [userResolvers, authenticationResolvers],
 })

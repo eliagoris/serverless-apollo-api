@@ -1,6 +1,5 @@
 import { Magic } from "@magic-sdk/admin"
 
-import { getIsAuthorizationTokenValid } from "../helpers/authorization-token-validator"
 import { useUser, MagicUser } from "../hooks/use-user.hook"
 
 const {
@@ -23,14 +22,6 @@ const getMagicUserFromDidToken = (didToken: string) => {
 
 export function useAuthentication() {
   async function createAuthentication(didToken: string) {
-    const isTokenValid = getIsAuthorizationTokenValid(didToken)
-
-    if (!isTokenValid) {
-      return {
-        error: "Malformed didToken.",
-      }
-    }
-
     try {
       /** First, validate the DID token */
       magic.token.validate(didToken)
@@ -62,8 +53,7 @@ export function useAuthentication() {
 
       return { user }
     } catch (e) {
-      console.error(e)
-      return { error: e }
+      throw e
     }
   }
 
