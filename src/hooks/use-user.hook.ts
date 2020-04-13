@@ -56,7 +56,12 @@ export async function useUser() {
       lastLoginAt: user.claim.iat,
     }
 
-    const createdUser = await UserModel.create(userToCreate)
+    const createdUser = await createUser(userToCreate)
+    return createdUser
+  }
+
+  const createUser = async (user: User) => {
+    const createdUser = await UserModel.create(user)
     return createdUser
   }
 
@@ -78,6 +83,7 @@ export async function useUser() {
 
   return {
     UserModel,
+    createUser,
     createUserFromMagicUser,
     getUserById,
     getUserByIssuer,

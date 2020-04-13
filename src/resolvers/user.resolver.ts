@@ -13,9 +13,9 @@ export const resolvers = {
 
   Mutation: {
     async createUser(parent, { input }) {
-      const { createUserFromMagicUser } = await useUser()
+      const { createUser } = await useUser()
 
-      const user = await createUserFromMagicUser(input)
+      const user = await createUser(input)
       return user
     },
   },
