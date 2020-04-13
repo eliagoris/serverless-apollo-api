@@ -24,7 +24,7 @@ export const userResolvers = {
       const { createUser } = await useUser()
 
       const user = await createUser(input)
-      return user
+      return { user }
     },
   },
 }

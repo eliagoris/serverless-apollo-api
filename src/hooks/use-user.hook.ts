@@ -68,6 +68,7 @@ export async function useUser() {
 
   const createUser = async (user: User) => {
     const createdUser = await UserModel.create(user)
+
     return createdUser
   }
 

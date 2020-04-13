@@ -51,7 +51,7 @@ export function useAuthentication() {
         user = await updateUserFromMagicUser(magicUser)
       }
 
-      return { user }
+      return user
     } catch (e) {
       throw e
     }
