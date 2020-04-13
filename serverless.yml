@@ -33,27 +33,6 @@ functions:
           path: playground
           method: get
           cors: true
-  createAuthentication:
-    handler: handler.createAuthenticationHandler
-    events:
-      - http:
-          path: /auth
-          method: post
-          cors: true
-  getAuthenticatedUser:
-    handler: handler.getAuthenticatedUserHandler
-    events:
-      - http:
-          path: /user
-          method: get
-          cors: true
-  getOneUser:
-    handler: handler.getOneUserHandler
-    events:
-      - http:
-          path: /user/{id}
-          method: get
-          cors: true
   handleAuthorization:
     handler: handler.authorizationHandler
     cors: true
