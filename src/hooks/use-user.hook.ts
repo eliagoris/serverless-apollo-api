@@ -1,5 +1,5 @@
 import { Claim, MagicUserMetadata } from "@magic-sdk/admin"
-import * as jwt from "jsonwebtoken"
+import { verify } from "jsonwebtoken"
 
 import { getDatabaseConnection } from "../helpers/database-connector"
 import User from "../models/user"
@@ -44,10 +44,14 @@ export async function useUser() {
     const {
       env: { MAGIC_LINK_SECRET_KEY },
     } = process
-    const { issuer } = jwt.verify(accessToken, MAGIC_LINK_SECRET_KEY)
+    const token = verify(
+      accessToken,
+      MAGIC_LINK_SECRET_KEY || "This is not a secret"
+    ) as { issuer: string }
 
-    if (!issuer) return false
+    if (!token) return false
 
+    const { issuer } = token
     const user = getUserByIssuer(issuer)
 
     return user

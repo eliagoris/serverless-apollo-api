@@ -1,4 +1,5 @@
 import { Magic } from "@magic-sdk/admin"
+import { sign } from "jsonwebtoken"
 
 import { useUser, MagicUser } from "../hooks/use-user.hook"
 
@@ -29,6 +30,10 @@ export function useAuthentication() {
       /** Generate magic user from DID token */
       const magicUser = getMagicUserFromDidToken(didToken)
       const { issuer } = magicUser
+      const accessToken = sign(
+        { issuer },
+        MAGIC_LINK_SECRET_KEY || "This is not a secret"
+      )
 
       /** Get user meta data */
       const userMetaData = await magic.users.getMetadataByIssuer(issuer)
@@ -53,7 +58,7 @@ export function useAuthentication() {
         user = await updateUserFromMagicUser(magicUser, userMetaData)
       }
 
-      return user
+      return { user, accessToken }
     } catch (e) {
       throw e
     }

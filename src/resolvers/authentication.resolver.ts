@@ -8,9 +8,9 @@ export const authenticationResolvers = {
       const { createAuthentication } = useAuthentication()
 
       try {
-        const user = await createAuthentication(didToken)
+        const { user, accessToken } = await createAuthentication(didToken)
 
-        return { user }
+        return { user, accessToken }
       } catch (e) {
         throw new AuthenticationError("Couldn't authenticate the user. " + e)
       }
