@@ -7,6 +7,7 @@ import { loginTypes } from "../types/login.types"
 const queries = `
   type Query {
     user(accessToken: String): User
+    users: [User]
   }
 `
 

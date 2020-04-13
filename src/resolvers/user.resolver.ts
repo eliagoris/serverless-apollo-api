@@ -9,6 +9,14 @@ export const resolvers = {
 
       return user
     },
+
+    async users() {
+      const { getAllUsers } = await useUser()
+
+      const users = await getAllUsers()
+
+      return users
+    },
   },
 
   Mutation: {

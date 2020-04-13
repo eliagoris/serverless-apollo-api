@@ -22,6 +22,12 @@ export async function useUser() {
   const databaseConnection = await getDatabaseConnection()
   const UserModel = User(databaseConnection)
 
+  const getAllUsers = async (): Promise<any> => {
+    const users = await UserModel.find()
+
+    return users
+  }
+
   const getUserById = async (id: string): Promise<User> => {
     const user = await UserModel.findById(id)
 
@@ -83,6 +89,7 @@ export async function useUser() {
 
   return {
     UserModel,
+    getAllUsers,
     createUser,
     createUserFromMagicUser,
     getUserById,
