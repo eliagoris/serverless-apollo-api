@@ -38,5 +38,5 @@ functions:
     cors: true
 
 plugins:
-  - serverless-plugin-typescript
+  - "@kingdarboja/serverless-plugin-typescript"
   - serverless-offline

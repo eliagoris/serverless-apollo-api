@@ -1,7 +1,5 @@
 "use strict"
 
-import { config } from "dotenv"
-config({ path: "./variables.env" })
 import { ApolloServer } from "apollo-server-lambda"
 import lambdaPlayground from "graphql-playground-middleware-lambda"
 
@@ -27,7 +25,12 @@ exports.playgroundHandler = lambdaPlayground({
   endpoint: "/dev/graphql",
 })
 
-exports.graphqlHandler = server.createHandler()
+exports.graphqlHandler = server.createHandler({
+  cors: {
+    origin: "*",
+    credentials: true,
+  },
+})
 
 import { handleAuthorization } from "./src/controllers/authorization.controller"
 
