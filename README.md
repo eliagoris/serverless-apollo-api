@@ -1,3 +1,3 @@
-# comoda-backend
+# serverless-apollo-api
 
-:construction:
+Used stack: Typescript, Serverless(https://www.serverless.com/), Apollo GraphQL, Mongoose
