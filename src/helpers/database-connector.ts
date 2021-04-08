@@ -25,6 +25,7 @@ export const getDatabaseConnection = async () => {
   const database = await mongoose.connect(DATABASE_ENDPOINT, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
 
   databaseConnection = database

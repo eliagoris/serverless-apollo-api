@@ -1,4 +1,15 @@
 export const userTypes = `
+  type Position {
+    x: String
+    y: String
+  }
+
+  type Character {
+    name: String
+    lookType: String
+    position: Position
+  }
+
   type User {
     _id: String
     email: String!
@@ -6,6 +17,7 @@ export const userTypes = `
     issuer: String!
     name: String
     lastLoginAt: String
+    characters: [Character]
   }
 
   type CreateUserPayload {

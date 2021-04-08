@@ -71,9 +71,10 @@ export async function useUser() {
     userMetaData: MagicUserMetadata
   ) => {
     const { issuer } = user
-    const { email } = userMetaData
+    const { email, ...rest } = userMetaData
 
     const userToCreate: User = {
+      ...rest,
       issuer,
       email: email ?? "",
       lastLoginAt: user.claim.iat,
