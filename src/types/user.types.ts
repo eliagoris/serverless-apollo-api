@@ -5,6 +5,7 @@ export const userTypes = `
   }
 
   type Character {
+    _id: String
     name: String
     lookType: String
     position: Position
